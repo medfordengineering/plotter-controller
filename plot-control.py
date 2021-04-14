@@ -19,18 +19,19 @@ def index():
 	if request.method == 'POST':
 		f = request.files['file']
 		if f.filename !='':
-			f.save("/home/pi/Projects/plotter/static/" + f.filename)
-		return 'file uploaded'
+			f.save("/home/pi/Projects/plotter/plotter-controller/static/" + f.filename)
 
 		pairs = ""
 		ser = serial.Serial('/dev/ttyUSB0', 9600)
 		time.sleep(2)
-		with open(f.filename, 'r') as fp:
+		with open('static/' + f.filename, 'r') as fp:
 			csvreader = csv.reader(fp)
 			for row in csvreader:
 				pairs = json.dumps(row)	
+				print(pairs)
 				ser.write(pairs.encode('ascii'))
 				time.sleep(.05)
 
+	return 'file uploaded'
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8000, debug = True)
