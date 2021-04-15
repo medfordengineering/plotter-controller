@@ -13,7 +13,7 @@
 #define YLIM 7
 #define TLIM 6
 
-#define driveDelay 400
+#define driveDelay 100
 #define tapDelay 200
 
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
@@ -22,6 +22,9 @@
 
 #define POS   +1
 #define NEG   -1
+
+#define DOWN 	1
+#define UP 		0
 
 StaticJsonDocument<100> doc;
 
@@ -52,7 +55,7 @@ void stepperY(int dir) {
   delayMicroseconds(driveDelay);
 }
 
-void pHome() {
+void plotHome() {
   while (digitalRead(XLIM) == false) {
     stepperX(POS);
   }
@@ -61,9 +64,9 @@ void pHome() {
   }
 }
 
-void tapDown() {
+void tap() {
 
-  digitalWrite(TDIR, HIGH);
+  digitalWrite(TDIR, DOWN);
 
   for (int x = 0; x < 200; x++) {
     digitalWrite(TSTP, HIGH);
@@ -71,11 +74,24 @@ void tapDown() {
     digitalWrite(TSTP, LOW);
     delayMicroseconds(tapDelay);
   }
-  tHome();
+  tapHome();
 }
-void tHome() {
-  digitalWrite(TDIR, LOW);
+
+void tapHome() {
+  digitalWrite(TDIR, UP);
   while (digitalRead(TLIM) == false) {
+    digitalWrite(TSTP, HIGH);
+    delayMicroseconds(tapDelay);
+    digitalWrite(TSTP, LOW);
+    delayMicroseconds(tapDelay);
+  }
+}
+
+void loadPen() {
+	tapHome();
+	digitalWrite(TDIR, DOWN);
+
+  for (int x = 0; x < 200; x++) {
     digitalWrite(TSTP, HIGH);
     delayMicroseconds(tapDelay);
     digitalWrite(TSTP, LOW);
@@ -150,18 +166,21 @@ void setup() {
   pinMode(TLIM, INPUT);
 
   digitalWrite(SCRL, LOW); //Turn off scrolling motor
-  /*pHome();
-  // Home();
-  for (int x = 0; x < 10; x++) {
-    tapDown();
-    delay(100);
-  }
-
-    plotCord(1000, 300);
-    plotCord(300, 300);
-    plotCord(300, 1000);
-    plotCord(1000, 100);
-  */
+	//loadPen();
+	tapHome();
+  plotHome();
+	plotCord(3000, 3000);
+	/*
+ 	plotCord(1000, 300);
+	tap();
+ 	plotCord(300, 300);
+	tap();
+ 	plotCord(300, 1000);
+	tap();
+ 	plotCord(1000, 100);
+	tap();
+	*/
+	while(1);
 }
 
 void loop() {
@@ -171,15 +190,10 @@ void loop() {
 			if (error) 
 				Serial.print("error");
 
-			Serial.print(doc["xy"][0]);
-			Serial.print(':');
-			Serial.println(doc["xy"][1]);
+			plotCord(doc["xy"][0], doc["xy"][1]);
+			tap();
+
 	}
 }
 
 
-
-
-        
-
-}
