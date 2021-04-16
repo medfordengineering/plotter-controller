@@ -167,9 +167,9 @@ void setup() {
 
   digitalWrite(SCRL, LOW); //Turn off scrolling motor
 	//loadPen();
-	tapHome();
-  plotHome();
-	plotCord(3000, 3000);
+	//tapHome();
+  //plotHome();
+	//plotCord(-8000, 8000);
 	/*
  	plotCord(1000, 300);
 	tap();
@@ -180,7 +180,7 @@ void setup() {
  	plotCord(1000, 100);
 	tap();
 	*/
-	while(1);
+	//while(1);
 }
 
 void loop() {
