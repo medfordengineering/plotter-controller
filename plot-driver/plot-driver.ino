@@ -31,6 +31,8 @@ StaticJsonDocument<100> doc;
 int aX;
 int aY;
 
+int i;
+
 void stepperX(int dir) {
   if (dir == POS)
     digitalWrite(XDIR, LOW);
@@ -190,9 +192,10 @@ void loop() {
 			if (error) 
 				Serial.print("error");
 
-			plotCord(doc["xy"][0], doc["xy"][1]);
+			//plotCord(doc["xy"][0], doc["xy"][1]);
+			plotCord(doc["c" + String(i)][0], doc["c" + String(i)][1]);
 			tap();
-
+			i++;
 	}
 }
 

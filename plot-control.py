@@ -17,12 +17,18 @@ app.secret_key = "hello"
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	if request.method == 'POST':
-#ser = serial.Serial('/dev/ttyUSB0', 9600)
-#time.sleep(2)
+	ser = serial.Serial('/dev/ttyUSB0', 9600)
+	time.sleep(2)
 		d = request.get_json();
 		d = json.loads(d)
-		for i in d['x'], j in d['y']:
-			print(i, j)
+		x = zip(d['x'], d['y'])
+		print('s')
+		print(next(x)[0])
+		print(next(x))
+		
+#print(tuple(x))
+#for i in d['x']:
+#print(i )
 #dicts = {
 #"xy": [d['x'][i-1], d['y'][i-1]]
 #}

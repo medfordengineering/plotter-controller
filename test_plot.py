@@ -23,7 +23,8 @@ with open('static/' + f.filename, 'r') as fp:
 		ser.write(pairs.encode('ascii'))
 		time.sleep(.05)
 """
-f = open('data.json')
+#f = open('data.json')
+f = open('ndata.json')
 data = json.load(f)
 f.close()
 
@@ -33,7 +34,6 @@ for i in data['values']:
 	ser.write(pairs.encode('ascii'))
 	#ser.write(i)
 	time.sleep(.5)
-
 """
 pairs = json.dumps(row)	
 //print(pairs)
