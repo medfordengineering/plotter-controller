@@ -14,7 +14,7 @@
 #define TLIM 6
 
 #define driveDelay 100
-#define tapDelay 200
+#define tapDelay 2000
 
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 
@@ -67,10 +67,10 @@ void plotHome() {
 }
 
 void tap() {
-
+  //tapHome();
   digitalWrite(TDIR, DOWN);
 
-  for (int x = 0; x < 200; x++) {
+  for (int x = 0; x < 10; x++) {
     digitalWrite(TSTP, HIGH);
     delayMicroseconds(tapDelay);
     digitalWrite(TSTP, LOW);
@@ -168,11 +168,11 @@ void setup() {
   pinMode(TLIM, INPUT);
 
   digitalWrite(SCRL, LOW); //Turn off scrolling motor
+	//tap();
 	//loadPen();
 	//tapHome();
   //plotHome();
 	//plotCord(-8000, 8000);
-	/*
  	plotCord(1000, 300);
 	tap();
  	plotCord(300, 300);
@@ -181,8 +181,7 @@ void setup() {
 	tap();
  	plotCord(1000, 100);
 	tap();
-	*/
-	//while(1);
+	while(1);
 }
 
 void loop() {
