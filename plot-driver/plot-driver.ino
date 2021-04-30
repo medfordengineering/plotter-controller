@@ -13,8 +13,9 @@
 #define YLIM 7
 #define TLIM 6
 
-#define driveDelay 100
+#define driveDelay 400
 #define tapDelay 2000
+#define testDelay 800 
 
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 
@@ -23,8 +24,8 @@
 #define POS   +1
 #define NEG   -1
 
-#define DOWN 	1
-#define UP 		0
+#define DOWN 0	
+#define UP 	1	
 
 StaticJsonDocument<100> doc;
 
@@ -35,9 +36,9 @@ int i;
 
 void stepperX(int dir) {
   if (dir == POS)
-    digitalWrite(XDIR, LOW);
-  else
     digitalWrite(XDIR, HIGH);
+  else
+    digitalWrite(XDIR, LOW);
 
   digitalWrite(XSTP, HIGH);
   delayMicroseconds(driveDelay);
@@ -59,7 +60,7 @@ void stepperY(int dir) {
 
 void plotHome() {
   while (digitalRead(XLIM) == false) {
-    stepperX(POS);
+    stepperX(NEG);
   }
   while (digitalRead(YLIM) == false) {
     stepperY(NEG);
@@ -171,17 +172,34 @@ void setup() {
 	//tap();
 	//loadPen();
 	//tapHome();
-  //plotHome();
-	//plotCord(-8000, 8000);
- 	plotCord(1000, 300);
+	plotHome();
+ 	plotCord(500, 500);
 	tap();
- 	plotCord(300, 300);
+ 	plotCord(1000, 1000);
 	tap();
- 	plotCord(300, 1000);
+ 	plotCord(1500, 1500);
 	tap();
- 	plotCord(1000, 100);
+ 	plotCord(2000, 2000);
 	tap();
-	while(1);
+	/*
+	digitalWrite(XDIR, LOW);
+//  for (int x = 0; x < 2000; x++) {
+	while(1) {
+  	digitalWrite(XSTP, HIGH);
+  	delayMicroseconds(driveDelay);
+  	digitalWrite(XSTP, LOW);
+  	delayMicroseconds(driveDelay);
+	}
+	digitalWrite(TDIR, LOW);
+  for (int x = 0; x < 2000; x++) {
+    digitalWrite(TSTP, HIGH);
+    delayMicroseconds(driveDelay);
+    digitalWrite(TSTP, LOW);
+    delayMicroseconds(driveDelay);
+  }
+
+	*/
+while(1);
 }
 
 void loop() {
