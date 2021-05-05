@@ -14,8 +14,9 @@
 #define TLIM 6
 
 #define driveDelay 400
-#define tapDelay 2000
-#define testDelay 800 
+#define tapDelay 500 
+#define testDelay 1500
+#define tapDistance 10
 
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 
@@ -68,16 +69,24 @@ void plotHome() {
 }
 
 void tap() {
-  //tapHome();
   digitalWrite(TDIR, DOWN);
 
-  for (int x = 0; x < 10; x++) {
+  for (int x = 0; x < tapDistance; x++) {
     digitalWrite(TSTP, HIGH);
     delayMicroseconds(tapDelay);
     digitalWrite(TSTP, LOW);
     delayMicroseconds(tapDelay);
   }
-  tapHome();
+ 	digitalWrite(TDIR, UP);
+
+  for (int x = 0; x < tapDistance; x++) {
+    digitalWrite(TSTP, HIGH);
+    delayMicroseconds(tapDelay);
+    digitalWrite(TSTP, LOW);
+    delayMicroseconds(tapDelay);
+  }
+//
+//  tapHome();
 }
 
 void tapHome() {
@@ -94,7 +103,7 @@ void loadPen() {
 	tapHome();
 	digitalWrite(TDIR, DOWN);
 
-  for (int x = 0; x < 200; x++) {
+  for (int x = 0; x < tapDistance; x++) {
     digitalWrite(TSTP, HIGH);
     delayMicroseconds(tapDelay);
     digitalWrite(TSTP, LOW);
@@ -169,10 +178,9 @@ void setup() {
   pinMode(TLIM, INPUT);
 
   digitalWrite(SCRL, LOW); //Turn off scrolling motor
-	//tap();
-	//loadPen();
-	//tapHome();
-	plotHome();
+//	loadPen();
+	tapHome();
+//	plotHome();
  	plotCord(500, 500);
 	tap();
  	plotCord(1000, 1000);
@@ -180,26 +188,8 @@ void setup() {
  	plotCord(1500, 1500);
 	tap();
  	plotCord(2000, 2000);
-	tap();
-	/*
-	digitalWrite(XDIR, LOW);
-//  for (int x = 0; x < 2000; x++) {
-	while(1) {
-  	digitalWrite(XSTP, HIGH);
-  	delayMicroseconds(driveDelay);
-  	digitalWrite(XSTP, LOW);
-  	delayMicroseconds(driveDelay);
-	}
-	digitalWrite(TDIR, LOW);
-  for (int x = 0; x < 2000; x++) {
-    digitalWrite(TSTP, HIGH);
-    delayMicroseconds(driveDelay);
-    digitalWrite(TSTP, LOW);
-    delayMicroseconds(driveDelay);
-  }
-
-	*/
-while(1);
+	//tapHome();
+	while(1);
 }
 
 void loop() {
@@ -211,7 +201,7 @@ void loop() {
 
 			//plotCord(doc["xy"][0], doc["xy"][1]);
 			plotCord(doc["c" + String(i)][0], doc["c" + String(i)][1]);
-			tap();
+			//tap();
 			i++;
 	}
 }
