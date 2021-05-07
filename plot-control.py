@@ -19,9 +19,17 @@ def index():
 			pairs = json.dumps(pairs)
 			print(pairs)
 			ser.write(pairs.encode('ascii'))
-			time.sleep(.2)
+			time.sleep(.1)
 		ser.close()
 		return 'file uploaded'
+
+@app.route('/control', methods=['POST'])
+def control():
+	if request.method == 'POST':
+		d = request.values
+		print(d)
+	return 'OK'
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8000, debug = True)
 
